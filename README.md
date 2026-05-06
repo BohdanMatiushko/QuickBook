@@ -46,36 +46,29 @@
 
 ## UML Діаграма прецедентів (Use Case Diagram)
 
-```mermaid
-usecaseDiagram
-    actor "Клієнт (Client)" as Client
-    actor "Адміністратор (Admin)" as Admin
+flowchart LR
+    Client[Клієнт] --> UC1[Забронювати послугу]
+    Client --> UC2[Скасувати бронювання]
 
-    package "QuickBook System" {
-        usecase "UC1: Забронювати послугу\n(Book Service)" as UC1
-        usecase "UC2: Скасувати бронювання\n(Cancel Appointment)" as UC2
-        usecase "UC3: Керувати послугами\n(Manage Services)" as UC3
-        
-        usecase "Авторизуватися\n(Login)" as Login
-        usecase "Переглянути доступні слоти\n(Check Availability)" as CheckAvail
-        usecase "Оновити каталог послуг\n(Update Catalog)" as UpdateCat
-    }
+    Admin[Адміністратор] --> UC3[Додати послугу]
+    Admin --> UC4[Редагувати послугу]
+    Admin --> UC5[Видалити послугу]
 
-    %% Зв'язки для Клієнта
-    Client --> UC1
-    Client --> UC2
-    
-    %% Зв'язки для Адміністратора
-    Admin --> UC3
-    
-    %% Залежності (Includes та Extends)
-    UC1 ..> Login : <<include>>
-    UC2 ..> Login : <<include>>
-    UC3 ..> Login : <<include>>
-    
-    UC1 ..> CheckAvail : <<include>>
-    UC3 ..> UpdateCat : <<include>>
-```
+    UC1 --> Login[Авторизація]
+    UC1 --> CheckAvail[Перевірка слотів]
+    UC1 --> Confirm[Підтвердження]
+
+    UC2 --> Login
+    UC2 --> ViewBookings[Мої бронювання]
+    UC2 --> ConfirmCancel[Підтвердження скасування]
+
+    UC3 --> Login
+    UC4 --> Login
+    UC5 --> Login
+
+    UC3 --> UpdateCat[Оновлення каталогу]
+    UC4 --> UpdateCat
+    UC5 --> UpdateCat
 
 **Опис 3 ключових Use Cases:**
 
