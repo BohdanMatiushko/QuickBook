@@ -45,7 +45,7 @@
 ---
 
 ## UML Діаграма прецедентів (Use Case Diagram)
-
+```mermaid
 flowchart LR
     Client[Клієнт] --> UC1[Забронювати послугу]
     Client --> UC2[Скасувати бронювання]
@@ -55,8 +55,8 @@ flowchart LR
     Admin --> UC5[Видалити послугу]
 
     UC1 --> Login[Авторизація]
-    UC1 --> CheckAvail[Перевірка слотів]
-    UC1 --> Confirm[Підтвердження]
+    UC1 --> CheckAvail[Перегляд слотів]
+    UC1 --> Confirm[Підтвердження бронювання]
 
     UC2 --> Login
     UC2 --> ViewBookings[Мої бронювання]
@@ -68,7 +68,7 @@ flowchart LR
 
     UC3 --> UpdateCat[Оновлення каталогу]
     UC4 --> UpdateCat
-    UC5 --> UpdateCat
+    UC5 --> UpdateCat```
 
 **Опис 3 ключових Use Cases:**
 
