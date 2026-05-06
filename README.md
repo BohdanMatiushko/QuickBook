@@ -68,7 +68,8 @@ flowchart LR
 
     UC3 --> UpdateCat[Оновлення каталогу]
     UC4 --> UpdateCat
-    UC5 --> UpdateCat```
+    UC5 --> UpdateCat
+```
 
 **Опис 3 ключових Use Cases:**
 
