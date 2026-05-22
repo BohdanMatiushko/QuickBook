@@ -82,7 +82,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
+# React dev server (Vite) та production SPA
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+]
+CORS_ALLOW_CREDENTIALS = True
+# Для локальної розробки без жорсткого списку (MVP)
+CORS_ALLOW_ALL_ORIGINS = DEBUG
 
 
 ROOT_URLCONF = 'QuickBook.urls'
