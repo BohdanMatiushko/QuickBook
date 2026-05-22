@@ -1,0 +1,145 @@
+.catalog-page {
+  padding-top: 2rem;
+  padding-bottom: 3rem;
+}
+
+.catalog-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.catalog-filters {
+  padding: 1.25rem;
+  position: sticky;
+  top: 120px;
+}
+
+.catalog-filters h3 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.catalog-filters ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.filter-btn {
+  width: 100%;
+  text-align: left;
+  padding: 0.6rem 0.85rem;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+  background: rgba(129, 140, 248, 0.15);
+  color: var(--text-main);
+}
+
+.filter-btn.active {
+  border: 1px solid rgba(129, 140, 248, 0.35);
+}
+
+.loading-text,
+.empty-catalog {
+  color: var(--text-muted);
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 3rem;
+}
+
+.service-image-placeholder {
+  height: 120px;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(192, 132, 252, 0.2));
+}
+
+@media (max-width: 768px) {
+  .catalog-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .catalog-filters {
+    position: static;
+  }
+
+  .catalog-filters ul {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    width: auto;
+  }
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.service-card {
+  padding: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(99, 102, 241, 0.2);
+}
+
+.service-category {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.service-name {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  flex-grow: 1;
+}
+
+.service-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-glass);
+}
+
+.price {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: white;
+}
+
+.duration {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.w-100 {
+  width: 100%;
+}

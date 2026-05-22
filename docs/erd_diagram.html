@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickBook — ERD Діаграма</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f0f1a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+        }
+
+        .mermaid {
+            background: #1a1a2e;
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 1400px;
+            overflow-x: auto;
+        }
+
+        .legend {
+            margin-top: 2rem;
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+
+        .legend-line {
+            width: 40px;
+            height: 3px;
+            border-radius: 2px;
+        }
+
+        .line-1m { background: #6366f1; }
+        .line-11 { background: #22c55e; }
+        .line-mm { background: #f59e0b; }
+
+        .constraints-box {
+            margin-top: 2rem;
+            background: #1a1a2e;
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            max-width: 1400px;
+            width: 100%;
+        }
+
+        .constraints-box h2 {
+            font-size: 1.1rem;
+            color: #a855f7;
+            margin-bottom: 1rem;
+        }
+
+        .constraints-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 1rem;
+        }
+
+        .constraint-card {
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            padding: 1rem;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .constraint-card h3 {
+            font-size: 0.85rem;
+            color: #6366f1;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .constraint-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .constraint-card li {
+            font-size: 0.82rem;
+            color: #bbb;
+            padding: 0.25rem 0;
+            padding-left: 1rem;
+            position: relative;
+        }
+
+        .constraint-card li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: #6366f1;
+        }
+
+        footer {
+            margin-top: 2rem;
+            color: #555;
+            font-size: 0.75rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>QuickBook — ERD Діаграма</h1>
+    <p class="subtitle">Entity-Relationship Diagram • Система бронювання послуг • 9 сутностей</p>
+
+    <div class="mermaid">
+erDiagram
+    USER {
+        bigint id PK
+        varchar username "UNIQUE, NOT NULL"
+        varchar first_name "nullable"
+        varchar last_name "nullable"
+        varchar password "nullable"
+        varchar email "UNIQUE, nullable"
+        varchar phone_number "nullable"
+        boolean is_client "default true"
+        boolean is_employee "default false"
+        varchar avatar_url "nullable"
+        date date_of_birth "nullable"
+        datetime created_at "auto"
+        datetime updated_at "auto"
+    }
+
+    CATEGORY {
+        bigint id PK
+        varchar name "NOT NULL"
+        text description "blank"
+        varchar icon "nullable"
+        boolean is_active "default true"
+        integer sort_order "default 0"
+        datetime created_at "auto"
+    }
+
+    SERVICE {
+        bigint id PK
+        varchar name "NOT NULL"
+        bigint category_id FK
+        text description "blank"
+        decimal price "NOT NULL"
+        duration duration "NOT NULL"
+        boolean is_active "default true"
+        integer max_clients "default 1"
+        varchar image_url "nullable"
+        datetime created_at "auto"
+        datetime updated_at "auto"
+    }
+
+    SERVICE_SPECIALIST {
+        bigint id PK
+        bigint service_id FK "UNIQUE with specialist"
+        bigint specialist_id FK "UNIQUE with service"
+        integer experience_years "default 0"
+        boolean is_primary "default false"
+        datetime created_at "auto"
+    }
+
+    APPOINTMENT {
+        bigint id PK
+        bigint client_id FK "NOT NULL"
+        bigint service_id FK "NOT NULL"
+        bigint specialist_id FK "nullable"
+        date date "NOT NULL"
+        time start_time "NOT NULL"
+        time end_time "nullable"
+        varchar status "CHECK scheduled-completed-cancelled"
+        text notes "blank"
+        datetime created_at "auto"
+    }
+
+    REVIEW {
+        bigint id PK
+        bigint appointment_id FK "UNIQUE (OneToOne)"
+        bigint client_id FK "NOT NULL"
+        integer rating "CHECK 1-5"
+        text comment "blank"
+        datetime created_at "auto"
+        datetime updated_at "auto"
+    }
+
+    PAYMENT {
+        bigint id PK
+        bigint appointment_id FK "UNIQUE (OneToOne)"
+        decimal amount "NOT NULL"
+        varchar payment_method "CHECK cash-card-online"
+        varchar status "CHECK pending-paid-refunded-failed"
+        varchar transaction_id "UNIQUE, nullable"
+        datetime paid_at "nullable"
+        datetime created_at "auto"
+        datetime updated_at "auto"
+    }
+
+    WORK_SCHEDULE {
+        bigint id PK
+        bigint specialist_id FK "UNIQUE with day_of_week"
+        integer day_of_week "CHECK 0-6"
+        time start_time "NOT NULL"
+        time end_time "NOT NULL"
+        boolean is_active "default true"
+        datetime created_at "auto"
+    }
+
+    NOTIFICATION {
+        bigint id PK
+        bigint recipient_id FK "NOT NULL"
+        varchar title "NOT NULL"
+        text message "NOT NULL"
+        varchar notification_type "CHECK valid types"
+        boolean is_read "default false"
+        datetime created_at "auto"
+        datetime read_at "nullable"
+    }
+
+    USER ||--o{ APPOINTMENT : "client (1:M mandatory)"
+    USER |o--o{ APPOINTMENT : "specialist (1:M optional)"
+    SERVICE ||--o{ APPOINTMENT : "1:M mandatory"
+    CATEGORY ||--o{ SERVICE : "1:M mandatory"
+    SERVICE ||--o{ SERVICE_SPECIALIST : "M:M junction"
+    USER ||--o{ SERVICE_SPECIALIST : "M:M junction"
+    APPOINTMENT ||--o| REVIEW : "1:1 optional"
+    APPOINTMENT ||--o| PAYMENT : "1:1 optional"
+    USER ||--o{ WORK_SCHEDULE : "1:M optional"
+    USER ||--o{ NOTIFICATION : "1:M mandatory"
+    USER ||--o{ REVIEW : "client (1:M)"
+    </div>
+
+    <div class="legend">
+        <div class="legend-item"><div class="legend-line line-1m"></div> 1:M (один до багатьох)</div>
+        <div class="legend-item"><div class="legend-line line-11"></div> 1:1 (один до одного)</div>
+        <div class="legend-item"><div class="legend-line line-mm"></div> M:M (через junction table)</div>
+    </div>
+
+    <div class="constraints-box">
+        <h2>🔒 Обмеження цілісності (Integrity Constraints)</h2>
+        <div class="constraints-grid">
+            <div class="constraint-card">
+                <h3>UNIQUE</h3>
+                <ul>
+                    <li><strong>User.email</strong> — унікальна електронна адреса</li>
+                    <li><strong>User.username</strong> — унікальне ім'я користувача</li>
+                    <li><strong>Payment.transaction_id</strong> — унікальний ID транзакції</li>
+                    <li><strong>Review.appointment_id</strong> — один відгук на запис (OneToOne)</li>
+                    <li><strong>Payment.appointment_id</strong> — одна оплата на запис (OneToOne)</li>
+                    <li><strong>ServiceSpecialist(service, specialist)</strong> — складний UNIQUE</li>
+                    <li><strong>WorkSchedule(specialist, day_of_week)</strong> — складний UNIQUE</li>
+                </ul>
+            </div>
+            <div class="constraint-card">
+                <h3>CHECK</h3>
+                <ul>
+                    <li><strong>Appointment.status</strong> ∈ {scheduled, completed, cancelled}</li>
+                    <li><strong>Review.rating</strong> ∈ [1, 2, 3, 4, 5]</li>
+                    <li><strong>Payment.status</strong> ∈ {pending, paid, refunded, failed}</li>
+                    <li><strong>Payment.payment_method</strong> ∈ {cash, card, online}</li>
+                    <li><strong>WorkSchedule.day_of_week</strong> ∈ [0..6]</li>
+                    <li><strong>Notification.notification_type</strong> ∈ {reminder, status_change, cancellation, promotion, system}</li>
+                </ul>
+            </div>
+            <div class="constraint-card">
+                <h3>NOT NULL (критичні поля)</h3>
+                <ul>
+                    <li><strong>User.username</strong> — обов'язкове ім'я</li>
+                    <li><strong>Appointment.client_id</strong> — обов'язковий клієнт</li>
+                    <li><strong>Appointment.service_id</strong> — обов'язкова послуга</li>
+                    <li><strong>Appointment.date</strong> — обов'язкова дата</li>
+                    <li><strong>Appointment.start_time</strong> — обов'язковий час</li>
+                    <li><strong>Service.name, Service.price</strong> — назва та ціна</li>
+                    <li><strong>Payment.amount</strong> — обов'язкова сума</li>
+                    <li><strong>Notification.recipient_id, title, message</strong></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <footer>QuickBook ERD • Згенеровано автоматично • 2026</footer>
+
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            er: {
+                diagramPadding: 20,
+                layoutDirection: 'TB',
+                minEntityWidth: 100,
+                minEntityHeight: 75,
+                entityPadding: 15,
+                useMaxWidth: true
+            },
+            themeVariables: {
+                primaryColor: '#6366f1',
+                primaryTextColor: '#e0e0e0',
+                primaryBorderColor: '#6366f1',
+                lineColor: '#6366f1',
+                secondaryColor: '#1a1a2e',
+                tertiaryColor: '#0f0f1a'
+            }
+        });
+    </script>
+</body>
+</html>
