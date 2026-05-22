@@ -1,11 +1,91 @@
 .catalog-page {
   padding-top: 2rem;
+  padding-bottom: 3rem;
 }
 
-.page-title {
-  font-size: 2.5rem;
-  margin-bottom: 2rem;
+.catalog-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.catalog-filters {
+  padding: 1.25rem;
+  position: sticky;
+  top: 120px;
+}
+
+.catalog-filters h3 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.catalog-filters ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.filter-btn {
+  width: 100%;
+  text-align: left;
+  padding: 0.6rem 0.85rem;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+  background: rgba(129, 140, 248, 0.15);
+  color: var(--text-main);
+}
+
+.filter-btn.active {
+  border: 1px solid rgba(129, 140, 248, 0.35);
+}
+
+.loading-text,
+.empty-catalog {
+  color: var(--text-muted);
+  grid-column: 1 / -1;
   text-align: center;
+  padding: 3rem;
+}
+
+.service-image-placeholder {
+  height: 120px;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(192, 132, 252, 0.2));
+}
+
+@media (max-width: 768px) {
+  .catalog-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .catalog-filters {
+    position: static;
+  }
+
+  .catalog-filters ul {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    width: auto;
+  }
 }
 
 .services-grid {
