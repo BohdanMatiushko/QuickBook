@@ -1,0 +1,12 @@
+.booking-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
+.booking-form-container {
+  width: 100%;
+  max-width: 500px;
+  padding: 3rem 2rem;
+}
