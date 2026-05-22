@@ -11,6 +11,7 @@ function Navbar() {
         <ul className="nav-links">
           <li><Link to="/">Головна</Link></li>
           <li><Link to="/catalog">Послуги</Link></li>
+          <li><Link to="/#contacts">Контакти</Link></li>
           <li><Link to="/dashboard">Кабінет</Link></li>
         </ul>
         <div className="nav-actions">
