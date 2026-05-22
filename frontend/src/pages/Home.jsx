@@ -32,8 +32,8 @@ function Home() {
             Преміальний сервіс для керування вашим часом. Знайдіть найкращих фахівців та забронюйте візит в один клік.
           </p>
           <div className="hero-actions">
-            <Link to="/catalog" className="btn btn-primary btn-lg">Записатися зараз</Link>
-            <Link to="/catalog" className="btn btn-secondary btn-lg">Переглянути послуги</Link>
+            <Link to="/specialists" className="btn btn-primary btn-lg">Записатися зараз</Link>
+            <Link to="/specialists" className="btn btn-secondary btn-lg">Переглянути фахівців</Link>
           </div>
         </div>
         <div className="hero-glow" aria-hidden="true" />

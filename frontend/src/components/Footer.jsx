@@ -13,7 +13,7 @@ function Footer() {
           <h4>Навігація</h4>
           <ul>
             <li><Link to="/">Головна</Link></li>
-            <li><Link to="/catalog">Послуги</Link></li>
+            <li><Link to="/specialists">Фахівці</Link></li>
             <li><Link to="/dashboard">Кабінет</Link></li>
           </ul>
         </div>

@@ -91,6 +91,14 @@ CORS_ALLOW_CREDENTIALS = True
 # Для локальної розробки без жорсткого списку (MVP)
 CORS_ALLOW_ALL_ORIGINS = DEBUG
 
+CSRF_COOKIE_HTTPONLY = False
+CSRF_COOKIE_SAMESITE = 'Lax'
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+]
+SESSION_COOKIE_SAMESITE = 'Lax'
+
 
 ROOT_URLCONF = 'QuickBook.urls'
 

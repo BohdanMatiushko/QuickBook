@@ -1,76 +1,49 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import api from '../services/api';
 import Button from '../components/Button';
+import { useAuth } from '../context/AuthContext';
 import { formatDate, formatStatus } from '../utils/format';
 import './Dashboard.css';
 
-const INITIAL_UPCOMING = [
-  {
-    id: 101,
-    service_name: 'Масаж спини',
-    date: '2026-05-28',
-    start_time: '14:00',
-    status: 'scheduled',
-  },
-];
+function ClientDashboard() {
+  const [upcoming, setUpcoming] = useState([]);
+  const [past, setPast] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-const INITIAL_PAST = [
-  {
-    id: 99,
-    service_name: 'Консультація терапевта',
-    date: '2026-04-10',
-    start_time: '10:00',
-    status: 'completed',
-    canReview: true,
-  },
-];
-
-function Dashboard() {
-  const location = useLocation();
-  const [upcoming, setUpcoming] = useState(INITIAL_UPCOMING);
-  const [past, setPast] = useState(INITIAL_PAST);
+  const load = () => {
+    api.get('/appointments/')
+      .then((res) => {
+        const list = res.data.results || res.data;
+        const scheduled = list.filter((a) => a.status === 'scheduled');
+        const done = list.filter((a) => a.status !== 'scheduled');
+        setUpcoming(scheduled);
+        setPast(done);
+      })
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  };
 
   useEffect(() => {
-    const nb = location.state?.newBooking;
-    if (!nb) return;
-    setUpcoming((prev) => [
-      {
-        id: Date.now(),
-        service_name: nb.service_name || 'Нова послуга',
-        date: nb.date,
-        start_time: nb.start_time,
-        status: 'scheduled',
-      },
-      ...prev,
-    ]);
-    window.history.replaceState({}, document.title);
-  }, [location.state]);
+    load();
+  }, []);
 
-  const handleCancel = (appointmentId) => {
+  const handleCancel = async (id) => {
     if (!window.confirm('Скасувати цей запис?')) return;
-    const item = upcoming.find((a) => a.id === appointmentId);
-    if (!item) return;
-    setUpcoming((u) => u.filter((a) => a.id !== appointmentId));
-    setPast((p) => [{ ...item, status: 'cancelled', canReview: false }, ...p]);
+    try {
+      await api.patch(`/appointments/${id}/`, { status: 'cancelled' });
+      load();
+    } catch {
+      alert('Не вдалося скасувати запис.');
+    }
   };
 
-  const handleReview = (appointmentId) => {
-    const rating = window.prompt('Оцінка від 1 до 5:', '5');
-    if (!rating) return;
-    setPast((list) =>
-      list.map((a) =>
-        a.id === appointmentId ? { ...a, canReview: false, reviewed: true } : a
-      )
-    );
-    alert('Дякуємо за відгук!');
-  };
+  if (loading) {
+    return <p className="loading-text">Завантаження записів…</p>;
+  }
 
   return (
-    <div className="container dashboard-page">
-      <h2 className="page-title">
-        Особистий <span className="text-gradient">Кабінет</span>
-      </h2>
-
+    <>
       <section className="dashboard-section glass-panel">
         <h3>Майбутні записи</h3>
         {upcoming.length === 0 ? (
@@ -82,17 +55,13 @@ function Dashboard() {
                 <div>
                   <strong>{a.service_name}</strong>
                   <span className="appointment-meta">
-                    {formatDate(a.date)} · {a.start_time}
+                    {formatDate(a.date)} · {String(a.start_time).slice(0, 5)}
                   </span>
                   <span className={`status-badge status-${a.status}`}>
                     {formatStatus(a.status)}
                   </span>
                 </div>
-                <Button
-                  variant="secondary"
-                  type="button"
-                  onClick={() => handleCancel(a.id)}
-                >
+                <Button variant="secondary" type="button" onClick={() => handleCancel(a.id)}>
                   Скасувати
                 </Button>
               </li>
@@ -112,23 +81,81 @@ function Dashboard() {
                 <div>
                   <strong>{a.service_name}</strong>
                   <span className="appointment-meta">
-                    {formatDate(a.date)} · {a.start_time}
+                    {formatDate(a.date)} · {String(a.start_time).slice(0, 5)}
                   </span>
                   <span className={`status-badge status-${a.status}`}>
                     {formatStatus(a.status)}
                   </span>
                 </div>
-                {a.canReview && a.status === 'completed' && (
-                  <Button
-                    variant="primary"
-                    type="button"
-                    onClick={() => handleReview(a.id)}
-                  >
-                    Залишити відгук
-                  </Button>
-                )}
-                {a.reviewed && (
-                  <span className="reviewed-label">Відгук надіслано</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <Link to="/specialists" className="btn btn-secondary" style={{ marginTop: '1.5rem' }}>
+        Перейти до фахівців
+      </Link>
+    </>
+  );
+}
+
+function SpecialistDashboard() {
+  const [appointments, setAppointments] = useState([]);
+  const [notifications, setNotifications] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    Promise.all([
+      api.get('/appointments/?role=specialist'),
+      api.get('/auth/notifications/'),
+    ])
+      .then(([aptRes, notifRes]) => {
+        setAppointments(aptRes.data.results || aptRes.data);
+        setNotifications(notifRes.data.results || notifRes.data);
+      })
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, []);
+
+  const markRead = async (id) => {
+    await api.post(`/auth/notifications/${id}/mark_read/`);
+    setNotifications((list) =>
+      list.map((n) => (n.id === id ? { ...n, is_read: true } : n))
+    );
+  };
+
+  if (loading) {
+    return <p className="loading-text">Завантаження…</p>;
+  }
+
+  return (
+    <>
+      <section className="dashboard-section glass-panel">
+        <div className="dashboard-section-header">
+          <h3>Сповіщення</h3>
+          <Link to="/my-services/new" className="btn btn-primary btn-sm">
+            + Нова послуга
+          </Link>
+        </div>
+        {notifications.length === 0 ? (
+          <p className="dashboard-empty">Немає нових сповіщень.</p>
+        ) : (
+          <ul className="notification-list">
+            {notifications.map((n) => (
+              <li
+                key={n.id}
+                className={`notification-item ${n.is_read ? 'read' : 'unread'}`}
+              >
+                <strong>{n.title}</strong>
+                <p>{n.message}</p>
+                <span className="appointment-meta">
+                  {new Date(n.created_at).toLocaleString('uk-UA')}
+                </span>
+                {!n.is_read && (
+                  <button type="button" className="mark-read-btn" onClick={() => markRead(n.id)}>
+                    Прочитано
+                  </button>
                 )}
               </li>
             ))}
@@ -136,9 +163,53 @@ function Dashboard() {
         )}
       </section>
 
-      <Link to="/catalog" className="btn btn-secondary" style={{ marginTop: '1.5rem' }}>
-        Перейти до каталогу
+      <section className="dashboard-section glass-panel">
+        <h3>Записи клієнтів</h3>
+        {appointments.length === 0 ? (
+          <p className="dashboard-empty">Поки немає бронювань на ваші послуги.</p>
+        ) : (
+          <ul className="appointment-list">
+            {appointments.map((a) => (
+              <li key={a.id} className="appointment-item">
+                <div>
+                  <strong>{a.client_name || 'Клієнт'}</strong>
+                  <span className="appointment-meta">
+                    {a.service_name} · {formatDate(a.date)} · {String(a.start_time).slice(0, 5)}
+                  </span>
+                  <span className={`status-badge status-${a.status}`}>
+                    {formatStatus(a.status)}
+                  </span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <Link to="/my-services" className="btn btn-secondary" style={{ marginTop: '1.5rem' }}>
+        Мої послуги
       </Link>
+    </>
+  );
+}
+
+function Dashboard() {
+  const { user, isSpecialist } = useAuth();
+
+  return (
+    <div className="container dashboard-page">
+      <h2 className="page-title">
+        {isSpecialist ? (
+          <>Кабінет <span className="text-gradient">фахівця</span></>
+        ) : (
+          <>Особистий <span className="text-gradient">кабінет</span></>
+        )}
+      </h2>
+      <p className="dashboard-greeting">
+        Вітаємо, {user?.first_name || user?.username}!
+      </p>
+
+      {isSpecialist ? <SpecialistDashboard /> : <ClientDashboard />}
     </div>
   );
 }

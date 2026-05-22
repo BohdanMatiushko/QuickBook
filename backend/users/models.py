@@ -6,8 +6,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 class User(AbstractUser):
     first_name = models.CharField(max_length=40, blank=True, null=True, verbose_name="Ім'я")
     last_name = models.CharField(max_length=40, blank=True, null=True, verbose_name="Фамілія")
-    password = models.CharField(max_length=255, blank=True, null=True, verbose_name="Пароль")
-    email = models.EmailField(unique=True, blank=True, null=True, verbose_name='Електронна-адреса')
+    email = models.EmailField(unique=True, verbose_name='Електронна-адреса')
     phone_number = models.CharField(max_length=15, blank=True, null=True, verbose_name="Номер телефону")
     is_client = models.BooleanField(default=True, verbose_name="Клієнт")
     is_employee = models.BooleanField(default=False, verbose_name="Співробітник")
@@ -73,6 +72,7 @@ class Notification(models.Model):
         ('reminder', 'Нагадування'),
         ('status_change', 'Зміна статусу'),
         ('cancellation', 'Скасування'),
+        ('new_booking', 'Нове бронювання'),
         ('promotion', 'Акція'),
         ('system', 'Системне'),
     ]
@@ -98,7 +98,8 @@ class Notification(models.Model):
         constraints = [
             models.CheckConstraint(
                 condition=models.Q(notification_type__in=[
-                    'reminder', 'status_change', 'cancellation', 'promotion', 'system'
+                    'reminder', 'status_change', 'cancellation',
+                    'new_booking', 'promotion', 'system'
                 ]),
                 name='valid_notification_type'
             ),

@@ -50,10 +50,85 @@
   text-align: left;
 }
 
-.time-slots {
+.time-slots--tiles {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 0.75rem;
+}
+
+.time-slots--timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.time-slots--timeline .time-slot {
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.time-slots--timeline .time-slot small {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.busy-hours-section {
+  margin-bottom: 1.25rem;
+}
+
+.busy-hours-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.busy-hour-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 8px;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(248, 113, 113, 0.25);
+  font-size: 0.9rem;
+}
+
+.busy-label {
+  color: #f87171;
+  font-size: 0.8rem;
+}
+
+.busy-spots {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+}
+
+.service-specialist {
+  color: var(--accent);
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+}
+
+.service-weekdays-hint {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.time-slot small {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-top: 0.15rem;
 }
 
 .time-slot {

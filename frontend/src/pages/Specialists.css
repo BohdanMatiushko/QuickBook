@@ -1,0 +1,146 @@
+.specialists-page {
+  padding-bottom: 4rem;
+}
+
+.specialists-subtitle {
+  color: var(--text-muted);
+  margin: -0.5rem 0 1.5rem;
+}
+
+.specialists-search {
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 2rem;
+  max-width: 480px;
+}
+
+.specialists-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.25rem;
+}
+
+.specialist-card {
+  padding: 1.5rem;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.specialist-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(99, 102, 241, 0.45);
+}
+
+.specialist-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.specialist-avatar--lg {
+  width: 72px;
+  height: 72px;
+  font-size: 1.75rem;
+}
+
+.specialist-card h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1.1rem;
+}
+
+.specialist-username {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin: 0 0 0.75rem;
+}
+
+.specialist-services-count {
+  font-size: 0.8rem;
+  color: var(--accent);
+}
+
+.specialist-profile {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.75rem 2rem;
+  margin-bottom: 2rem;
+}
+
+.specialist-services-title {
+  margin-bottom: 1.25rem;
+  font-size: 1.15rem;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.25rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  color: var(--primary);
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.service-card {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.service-card .service-category {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.service-card .service-name {
+  margin: 0 0 0.5rem;
+  font-size: 1.15rem;
+}
+
+.service-desc-short {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  flex: 1;
+}
+
+.service-card .service-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.service-card .price {
+  color: var(--primary);
+}
+
+.service-image-placeholder {
+  height: 120px;
+  border-radius: 12px;
+  background: rgba(99, 102, 241, 0.08);
+  margin-bottom: 1rem;
+}

@@ -1,0 +1,57 @@
+.service-form-page {
+  padding-bottom: 4rem;
+}
+
+.service-form-card {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem;
+}
+
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-hint {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.weekday-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.weekday-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.5rem 0.85rem;
+  border-radius: 10px;
+  border: 1px solid var(--border-glass);
+  background: rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  font-size: 0.9rem;
+  user-select: none;
+}
+
+.weekday-chip:has(input:checked) {
+  border-color: var(--primary);
+  background: rgba(99, 102, 241, 0.2);
+}
+
+.weekday-chip input {
+  accent-color: var(--primary);
+}
+
+@media (max-width: 600px) {
+  .form-row-2 {
+    grid-template-columns: 1fr;
+  }
+}

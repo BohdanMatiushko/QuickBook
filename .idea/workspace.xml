@@ -5,16 +5,39 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b8502f60-cec2-4539-9e89-69edfb747c3e" name="Changes" comment="lab 5">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/QuickBook.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/QuickBook/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/QuickBook/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/QuickBook/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/QuickBook/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/appointments/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/appointments/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/appointments/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/appointments/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/services/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/services/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/services/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/services/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/services/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/services/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/services/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/services/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/users/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/users/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/users/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Footer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Footer.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Navbar.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Navbar.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Navbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Navbar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Auth.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Auth.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Booking.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Booking.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Booking.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Booking.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Dashboard.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Dashboard.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Dashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Dashboard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Home.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Login.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Register.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Register.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/services/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/api.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="cachedIndexableFilesCount" value="101" />
+    <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="Git.Settings">
     <excluded-from-favorite>
@@ -46,13 +69,20 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/BohdanMatiushko/QuickBook.git&quot;,
-    &quot;accountId&quot;: &quot;b3272755-7bb3-4584-be98-87cd8279471f&quot;
+    &quot;accountId&quot;: &quot;e74b1e53-9910-4ab8-9ae0-ea9d48226d10&quot;
   }
 }</component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
 }</component>
   <component name="ProjectId" id="3CcoWy6NcC8pUngYcSLDFYwpERm" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -60,13 +90,14 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
     &quot;ai.playground.ignore.import.keys.banner.in.settings&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;dev__zerox&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -105,8 +136,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-PY-253.30387.173" />
-        <option value="bundled-python-sdk-4762d8aabb82-6d6dccd035ac-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-253.30387.173" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-PY-253.30387.127" />
+        <option value="bundled-python-sdk-3944b0c99280-6d6dccd035ac-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-253.30387.127" />
       </set>
     </attachedChunks>
   </component>
@@ -123,6 +154,11 @@
       <workItem from="1778011696147" duration="1357000" />
       <workItem from="1778070860401" duration="836000" />
       <workItem from="1779475347795" duration="3652000" />
+      <workItem from="1779485363227" duration="554000" />
+      <workItem from="1779485925529" duration="1481000" />
+      <workItem from="1779487497176" duration="622000" />
+      <workItem from="1779488218124" duration="189000" />
+      <workItem from="1779488416517" duration="1754000" />
     </task>
     <task id="LOCAL-00001" summary="init comit">
       <option name="closed" value="true" />

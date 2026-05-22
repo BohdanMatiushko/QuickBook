@@ -1,13 +1,17 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
+import { useAuth } from '../context/AuthContext';
 import './Auth.css';
 
 function Register() {
   const navigate = useNavigate();
+  const { register } = useAuth();
   const [error, setError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [role, setRole] = useState('client');
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     setError('');
     const form = e.target;
@@ -19,8 +23,35 @@ function Register() {
       return;
     }
 
-    // MVP: підключення API реєстрації — наступний етап
-    navigate('/login', { state: { registered: true } });
+    setSubmitting(true);
+    try {
+      await register({
+        username: form.username.value,
+        email: form.email.value,
+        password,
+        phone_number: form.phone.value || '',
+        first_name: form.firstName?.value || '',
+        last_name: form.lastName?.value || '',
+        role,
+      });
+      navigate('/dashboard', { replace: true });
+    } catch (err) {
+      if (!err.response) {
+        setError('Сервер недоступний. Запустіть backend (docker compose up) і спробуйте знову.');
+        return;
+      }
+      const data = err.response?.data;
+      if (typeof data === 'object' && data !== null) {
+        const messages = Object.entries(data).flatMap(([, val]) =>
+          Array.isArray(val) ? val : [String(val)]
+        );
+        setError(messages[0] || 'Не вдалося зареєструватися.');
+      } else {
+        setError('Не вдалося зареєструватися. Спробуйте ще раз.');
+      }
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -30,9 +61,28 @@ function Register() {
           <span className="text-gradient">Реєстрація</span>
         </h2>
 
-        {error && <div className="auth-message auth-message--info">{error}</div>}
+        {error && <div className="auth-message auth-message--error">{error}</div>}
 
         <form onSubmit={handleRegister}>
+          <div className="form-group">
+            <label className="form-label">Тип акаунту</label>
+            <div className="role-toggle">
+              <button
+                type="button"
+                className={role === 'client' ? 'role-btn active' : 'role-btn'}
+                onClick={() => setRole('client')}
+              >
+                Клієнт
+              </button>
+              <button
+                type="button"
+                className={role === 'specialist' ? 'role-btn active' : 'role-btn'}
+                onClick={() => setRole('specialist')}
+              >
+                Фахівець
+              </button>
+            </div>
+          </div>
           <div className="form-group">
             <label className="form-label" htmlFor="reg-username">Ім&apos;я користувача</label>
             <input
@@ -89,8 +139,8 @@ function Register() {
               placeholder="Повторіть пароль"
             />
           </div>
-          <Button type="submit" variant="primary" className="w-100">
-            Зареєструватися
+          <Button type="submit" variant="primary" className="w-100" disabled={submitting}>
+            {submitting ? 'Реєстрація…' : 'Зареєструватися'}
           </Button>
         </form>
 

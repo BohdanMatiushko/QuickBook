@@ -37,3 +37,91 @@
 .nav-links a:hover {
   color: var(--text-main);
 }
+
+.user-menu {
+  position: relative;
+}
+
+.user-menu-trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-glass);
+  border-radius: 14px;
+  padding: 0.35rem 0.85rem 0.35rem 0.35rem;
+  color: var(--text-main);
+  cursor: pointer;
+  font-family: var(--font-sans);
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.user-menu-label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.2;
+  text-align: left;
+}
+
+.user-menu-label strong {
+  font-size: 0.9rem;
+}
+
+.user-menu-label small {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.user-menu-dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.5rem);
+  min-width: 220px;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  z-index: 1100;
+}
+
+.user-menu-email {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 0 0 0.25rem;
+  padding: 0 0.25rem;
+}
+
+.user-menu-dropdown a,
+.user-menu-logout {
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  text-align: left;
+  color: var(--text-main);
+  background: none;
+  border: none;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.user-menu-dropdown a:hover,
+.user-menu-logout:hover {
+  background: rgba(99, 102, 241, 0.15);
+}
+
+.user-menu-logout {
+  color: #f87171;
+  margin-top: 0.25rem;
+}

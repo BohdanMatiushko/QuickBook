@@ -1,26 +1,30 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import api from '../services/api';
+import api, { ensureCsrf } from '../services/api';
 import Button from '../components/Button';
+import { useAuth } from '../context/AuthContext';
 import { formatPrice, formatDuration } from '../utils/format';
 import './Booking.css';
 
-const TIME_SLOTS = ['10:00', '11:30', '14:00', '16:00'];
+const WEEKDAY_SHORT = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Нд'];
 
-const DEMO_BY_ID = {
-  1: { id: 1, name: 'Консультація терапевта', price: '500.00', duration: '00:30:00', category_name: 'Медицина', description: 'Первинна консультація з терапевтом.' },
-  2: { id: 2, name: 'Масаж спини', price: '800.00', duration: '01:00:00', category_name: 'SPA', description: 'Релаксуючий масаж спини.' },
-  3: { id: 3, name: 'Стрижка чоловіча', price: '400.00', duration: '00:45:00', category_name: 'Барбершоп', description: 'Класична стрижка та укладка.' },
-};
+function formatWeekdays(days) {
+  if (!days?.length || days.length === 7) return 'щодня';
+  return days.map((d) => WEEKDAY_SHORT[d]).join(', ');
+}
 
 function Booking() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
   const [service, setService] = useState(null);
   const [loading, setLoading] = useState(true);
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
+  const [availability, setAvailability] = useState(null);
+  const [loadingSlots, setLoadingSlots] = useState(false);
 
   useEffect(() => {
     api.get(`/services/${id}/`)
@@ -29,42 +33,72 @@ function Booking() {
         setLoading(false);
       })
       .catch(() => {
-        setService(DEMO_BY_ID[id] || { id, name: `Послуга #${id}`, price: '0', duration: '00:30:00' });
+        setError('Послугу не знайдено.');
         setLoading(false);
       });
   }, [id]);
 
+  useEffect(() => {
+    if (!date || !service) {
+      setAvailability(null);
+      return;
+    }
+    setLoadingSlots(true);
+    setTime('');
+    api.get(`/services/${id}/availability/`, { params: { date } })
+      .then((res) => setAvailability(res.data))
+      .catch(() => setAvailability(null))
+      .finally(() => setLoadingSlots(false));
+  }, [date, id, service]);
+
   const handleBooking = async (e) => {
     e.preventDefault();
+    if (!isAuthenticated) {
+      navigate('/login', { state: { from: `/booking/${id}` } });
+      return;
+    }
     setSubmitting(true);
+    setError('');
     try {
+      await ensureCsrf();
       await api.post('/appointments/', {
         service: Number(id),
         date,
         start_time: `${time}:00`,
         status: 'scheduled',
       });
+      navigate('/dashboard');
     } catch (err) {
-      console.warn('Appointment API unavailable (MVP demo)', err);
+      const data = err.response?.data;
+      if (typeof data === 'object') {
+        const msg = Object.values(data).flat()[0];
+        setError(typeof msg === 'string' ? msg : 'Не вдалося забронювати.');
+      } else {
+        setError('Не вдалося забронювати. Оберіть інший час.');
+      }
+    } finally {
+      setSubmitting(false);
     }
-    setSubmitting(false);
-    navigate('/dashboard', {
-      state: {
-        newBooking: {
-          service_name: service?.name,
-          date,
-          start_time: time,
-        },
-      },
-    });
   };
 
   const minDate = new Date().toISOString().split('T')[0];
+  const displayMode = availability?.display_mode || service?.display_mode || 'timeline';
+  const slots = availability?.slots || [];
+  const availableSlots = slots.filter((s) => s.is_available);
+  const busySlots = slots.filter((s) => s.is_busy);
 
   if (loading) {
     return (
       <div className="container booking-page">
         <p className="loading-text">Завантаження…</p>
+      </div>
+    );
+  }
+
+  if (!service) {
+    return (
+      <div className="container booking-page">
+        <p className="loading-text">{error || 'Послуга недоступна.'}</p>
       </div>
     );
   }
@@ -75,6 +109,9 @@ function Booking() {
         <aside className="service-details glass-panel">
           <span className="service-details-category">{service.category_name}</span>
           <h2>{service.name}</h2>
+          {service.owner_name && (
+            <p className="service-specialist">Фахівець: {service.owner_name}</p>
+          )}
           {service.description && (
             <p className="service-details-desc">{service.description}</p>
           )}
@@ -82,12 +119,17 @@ function Booking() {
             <span>{formatPrice(service.price)}</span>
             <span>{formatDuration(service.duration)}</span>
           </div>
+          <p className="service-weekdays-hint">
+            Запис: {formatWeekdays(service.available_weekdays)}
+          </p>
         </aside>
 
         <div className="glass-panel booking-form-container">
           <h2 className="page-title booking-form-title">
             Оберіть <span className="text-gradient">дату та час</span>
           </h2>
+
+          {error && <div className="auth-message auth-message--error">{error}</div>}
 
           <form onSubmit={handleBooking}>
             <div className="form-group">
@@ -103,22 +145,70 @@ function Booking() {
               />
             </div>
 
-            <div className="form-group">
-              <label className="form-label" htmlFor="booking-time">Часовий слот</label>
-              <div className="time-slots" role="group" aria-label="Доступні часові слоти">
-                {TIME_SLOTS.map((slot) => (
-                  <button
-                    key={slot}
-                    type="button"
-                    className={`time-slot ${time === slot ? 'selected' : ''}`}
-                    onClick={() => setTime(slot)}
-                  >
-                    {slot}
-                  </button>
-                ))}
-              </div>
-              <input type="hidden" required value={time} />
-            </div>
+            {date && (
+              <>
+                {availability?.day_unavailable ? (
+                  <p className="dashboard-empty">
+                    У цей день запис недоступний. Оберіть іншу дату ({formatWeekdays(service.available_weekdays)}).
+                  </p>
+                ) : (
+                  <>
+                {busySlots.length > 0 && (
+                  <div className="form-group busy-hours-section">
+                    <label className="form-label">Зайняті години</label>
+                    <ul className="busy-hours-list">
+                      {busySlots.map((slot) => (
+                        <li key={slot.time} className="busy-hour-item">
+                          <span>{slot.time}</span>
+                          {slot.spots_remaining !== undefined && service.max_clients > 1 ? (
+                            <span className="busy-spots">
+                              {slot.booked_count}/{service.max_clients} · ще {slot.spots_remaining}
+                            </span>
+                          ) : (
+                            <span className="busy-label">зайнято</span>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                <div className="form-group">
+                  <label className="form-label">Вільний час</label>
+                  {loadingSlots ? (
+                    <p className="loading-text">Завантаження слотів…</p>
+                  ) : availableSlots.length === 0 ? (
+                    <p className="dashboard-empty">На цю дату немає вільних слотів.</p>
+                  ) : (
+                    <div
+                      className={
+                        displayMode === 'tiles'
+                          ? 'time-slots time-slots--tiles'
+                          : 'time-slots time-slots--timeline'
+                      }
+                      role="group"
+                      aria-label="Вільні часові слоти"
+                    >
+                      {availableSlots.map((slot) => (
+                        <button
+                          key={slot.time}
+                          type="button"
+                          className={`time-slot ${time === slot.time ? 'selected' : ''}`}
+                          onClick={() => setTime(slot.time)}
+                        >
+                          {slot.time}
+                          {service.max_clients > 1 && slot.spots_remaining != null && (
+                            <small>до {slot.spots_remaining + (slot.booked_count || 0)} місць</small>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                  </>
+                )}
+              </>
+            )}
 
             <div className="form-group" style={{ marginTop: '2rem' }}>
               <Button
